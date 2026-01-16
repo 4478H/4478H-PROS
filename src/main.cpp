@@ -2,8 +2,8 @@
 #include "lemlib/api.hpp" // IWYU pragma: keep
 #include "lemlib/chassis/chassis.hpp"
 #include "devices.h"
-#include "auton.h"
-#include "autonSelector.h"
+#include "auton_routes.h"
+#include "auton_selector.h"
 #include "movement.h"
 #include "pros/misc.h"
 #include "pros/motors.h"
