@@ -7,7 +7,7 @@
 struct AutonRoutine {
     std::string displayName;
     std::function<void(int)> func;
-    int parameter = 0;
+    int parameter = 1;
 };
 
 // Global variable for color/alliance selection
@@ -15,7 +15,7 @@ bool red = false;
 
 // Constructor
 AutonSelector::AutonSelector(const AutonRoutine* routinesArray, size_t routineCount, bool combineTesting, const AutonRoutine* extraRoutinesArray, size_t extraCount) {
-    currentSelection = 1;  // Initialize to first routine hi 
+    currentSelection = 6;  // Initialize to first selection
 
     // Add main routines
     for (size_t i = 0; i < routineCount; i++) {
@@ -42,14 +42,14 @@ AutonSelector::AutonSelector(const AutonRoutine* routinesArray, size_t routineCo
 // Method implementations
 void AutonSelector::displaySelectionBrain() {
     if (currentSelection < 1 || currentSelection > routines.size()) {
-        pros::lcd::clear_line(4);
-        pros::lcd::print(4, "Invalid selection: %i", currentSelection);
+        pros::lcd::clear_line(7);
+        pros::lcd::print(7, "Invalid selection: %i", currentSelection);
         return;
     }
-    pros::lcd::clear_line(1);
-    pros::lcd::print(1, "Alliance: %s", red ? "Red" : "Blue");
-    pros::lcd::clear_line(2);
-    pros::lcd::print(2, "%s",routines[currentSelection - 1].displayName.c_str());
+    pros::lcd::clear_line(6);
+    pros::lcd::print(6, "Alliance: %s", red ? "Red" : "Blue");
+    pros::lcd::clear_line(5);
+    pros::lcd::print(5, "%s",routines[currentSelection - 1].displayName.c_str());
 }
 
 void AutonSelector::prevSelection() {
@@ -62,8 +62,8 @@ void AutonSelector::nextSelection() {
 
 void AutonSelector::runSelection() {
     if (currentSelection < 1 || currentSelection > routines.size()) {
-        pros::lcd::clear_line(4);
-        pros::lcd::print(4, "Invalid selection: %d", currentSelection);
+        pros::lcd::clear_line(7);
+        pros::lcd::print(7, "Invalid selection: %d", currentSelection);
         return;
     }
 
@@ -83,9 +83,10 @@ const AutonRoutine COMPETITION_ROUTINES[] = {
     {"Left 7 Ball Push", leftPush, 1},
     {"Right 7 Ball Push", rightPush, 1},
     {"Full AWP LEFT SIDE", fullAWPLeft,1},
-    {"Full FIELD SKILLS", skillsNew,1},
+    {"Full AWP RIGHT SIDE", fullAWPRight,1},
     {"Odom AWP Right", odomAWPHigh,1},
-    {"Elim 9 Ball", tylerAuton,1}
+    {"skills", skillsNew,1},
+    {"PID Testing", PIDTesting,1},
 };
 
 

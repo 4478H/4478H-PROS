@@ -15,6 +15,7 @@
 #include "lemlib/pid.hpp"
 #include "liblvgl/llemu.hpp"
 #include "pros/adi.h"
+#include "colorSort.h"
 using namespace pros;
 using namespace lemlib;
 /**
@@ -23,10 +24,50 @@ using namespace lemlib;
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
+ bool colorSortEnabled = true; // Color sorting is on by default
+extern bool red;  // Declared in auton_selector.cpp
+
+void onCenter_button()
+{
+    red = !red;
+    competitionSelector.displaySelectionBrain();
+}
 void initialize() {
+	wing.set_value(LOW);
 	lcd::initialize();
 	chassis.calibrate();
 	pros::lcd::set_text_align(pros::lcd::Text_Align::CENTER);
+	
+	// Show current route on brain screen
+	competitionSelector.displaySelectionBrain();
+	
+	// Register button callbacks for auton selector
+	lcd::register_btn0_cb(on_left_button);
+	lcd::register_btn2_cb(on_right_button);
+	lcd::register_btn1_cb(onCenter_button);
+	
+	    // Start a background task to update the LCD with robot pose and selection
+    pros::Task screen_task([&]()
+                           {
+        while (true) {
+
+            // Display lemlib pose
+            pros::lcd::print(0, "LemLib X:%.1f Y:%.1f", chassis.getPose().x, chassis.getPose().y);
+            pros::lcd::print(1, "Heading: %.1f", fmod(chassis.getPose().theta, 360.0));
+            
+            // Display lateral PID settings
+            pros::lcd::print(2, "Lateral: KP=%.1f KI=%.1f KD=%.1f", 
+                           lateral_controller.kP, lateral_controller.kI, lateral_controller.kD);
+            
+            // Display angular PID settings
+            pros::lcd::print(3, "Angular: KP=%.1f KI=%.1f KD=%.1f", 
+                           angular_controller.kP, angular_controller.kI, angular_controller.kD);
+            
+            // Display drive PID settings
+            pros::lcd::print(4, "Drive: KP=%.2f KI=%.2f KD=%.2f", 
+                           drive_kP, drive_kI, drive_kD);
+            pros::delay(100);
+        } });
 }
 
 
@@ -36,7 +77,18 @@ void initialize() {
 
 
 void autonomous() {
+    controller.clear();
     all_motors.set_brake_mode_all(E_MOTOR_BRAKE_HOLD);
+    
+    // Start a background task to display controller info during autonomous
+    pros::Task display_task([&]() {
+        while(true) {
+            controller.print(0, 0, "Heading: %.1f", fmod(chassis.getPose().theta, 360.0));
+            controller.print(5, 0, "LemLib X:%.1f Y:%.1f", chassis.getPose().x, chassis.getPose().y);
+            pros::delay(100);
+        }
+    });
+    
     competitionSelector.runSelection();
     all_motors.brake();
     delay(2000);
@@ -56,17 +108,7 @@ void disabled() {}
  * on the LCD.
  *
  */
-bool colorSortEnabled = true; // Color sorting is on by default
-bool red = false;
-bool hoodOpen = false; // Hood piston state
-bool descoreOpen = false; // Mid descore piston state
-bool wingOpen = false; // Wing piston state
 
-void onCenter_button()
-{
-    red = !red;
-    competitionSelector.displaySelectionBrain();
-}
 void competition_initialize() {
 	
 
@@ -84,7 +126,7 @@ void competition_initialize() {
     lcd::register_btn1_cb(onCenter_button);
 }
 
-const double SMOOTHING_DENOMINATOR = 251; // Used to normalize the exponential curve
+const double SMOOTHING_DENOMINATOR = 150; // Used to normalize the exponential curve
 const double EXPONENTIAL_POWER = 2.2;       // Controls how aggressive the curve is
 // Helper function that makes joystick input more precise for small movements
 // while maintaining full power at maximum joystick
@@ -128,6 +170,7 @@ void handleDriveTrain()
 
 void handleIntake()
 {
+	
 	if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
 		bottomStage.move(127);
 		midStage.move(127);
@@ -138,14 +181,14 @@ void handleIntake()
 	else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
 		bottomStage.move(-127);
 		midStage.move(-127);
-		topStage.move(-127);
+		topStage.move(127);
 	}
 
 
 	else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)){
-		bottomStage.move(100);
-		midStage.move(100);
-		topStage.move(-85);
+		bottomStage.move(127);
+		midStage.move(127);
+		topStage.move(-35);
 	}
 
 
@@ -169,8 +212,13 @@ void handleMidDescore(){
 	}
 }
 void handleWing(){
-	if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){
+	if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)){
 		wing.set_value(!wing.get_value());
+	}
+}
+void handleLoader(){
+	if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){
+		loader.set_value(!loader.get_value());
 	}
 }
 /**
@@ -209,6 +257,7 @@ void opcontrol() {
 		handleMidDescore();
 		handleWing();
 		handleIntake();
+        handleLoader();
 		pros::delay(20);                               // Run for 20 ms then update
 	}
 }

@@ -14,11 +14,10 @@ class AutonSelector
 private:
     std::vector<AutonRoutine> routines;
     int currentSelection;
-
 public:
     // Constructor
     AutonSelector(const AutonRoutine *routinesArray, size_t routineCount, bool combineTesting = false, const AutonRoutine *extraRoutinesArray = nullptr, size_t extraCount = 0);
-
+    
     // Display methods
     void displaySelectionBrain();
     void displaySelectionController();

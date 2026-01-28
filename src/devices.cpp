@@ -21,10 +21,10 @@ pros::Controller controller(pros::E_CONTROLLER_MASTER);
 pros::MotorGroup right_motors({19, 18, -14}, pros::MotorGearset::blue);
 pros::MotorGroup left_motors({-11, -12, 13}, pros::MotorGearset::blue);
 pros::MotorGroup all_motors({19, 18, -14, -11, -12, 13}, pros::MotorGearset::blue);
-pros::Motor bottomStage{8, pros::MotorGearset::blue};
-pros::Motor midStage{10, pros::MotorGearset::green};
-pros::Motor topStage{7, pros::MotorGearset::green};
-pros::MotorGroup intake({-8, 10, 7});
+pros::Motor bottomStage{16, pros::MotorGearset::blue};
+pros::Motor midStage{-1, pros::MotorGearset::green};
+pros::Motor topStage{2, pros::MotorGearset::green};
+pros::MotorGroup intake({10, -1, 2});
 pros::Motor mFrontLeft(13, pros::MotorGearset::blue);
 pros::Motor mBackLeft(-11, pros::MotorGearset::blue);
 pros::Motor mMidLeft(-12, pros::MotorGearset::blue);
@@ -33,14 +33,14 @@ pros::Motor mBackRight(19, pros::MotorGearset::blue);
 pros::Motor mMidRight(18, pros::MotorGearset::blue);
 // Sensor Declerations and Configurations
 pros::Imu imu(3  );
-pros::Optical colorSens(2);
+pros::Optical colorSens(8);
 pros::Distance backDistance(16); 
 Distance* backDistancePtr = &backDistance;
 // Phnematic Declerations and Configurations
 adi::Port hood('B', E_ADI_DIGITAL_OUT);
-adi::Port loader('G', E_ADI_DIGITAL_OUT);
+adi::Port loader('C', E_ADI_DIGITAL_OUT);
 adi::Port wing('A', E_ADI_DIGITAL_OUT);
-adi::Port midDescore('C', E_ADI_DIGITAL_OUT);
+adi::Port midDescore('G', E_ADI_DIGITAL_OUT);
 
 
 
@@ -76,9 +76,9 @@ ControllerSettings lateral_controller(10,  // proportional gain (kP)
 );
 
 // angular PID controller
-ControllerSettings angular_controller(2.9, // proportional gain (kP)
-                                      0.2, // integral gain (kI)
-                                      24,  // derivative gain (kD)
+ControllerSettings angular_controller(2.75, // proportional gain (kP)
+                                      0, // integral gain (kI)
+                                      19.5,  // derivative gain (kD)
                                       5,   // anti windup
                                       0.1, // small error range, in inches
                                       250, // small error range timeout, in milliseconds

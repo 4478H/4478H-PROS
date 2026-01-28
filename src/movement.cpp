@@ -28,9 +28,9 @@ void scoreMid(){
     bottomStage.set_brake_mode(MOTOR_BRAKE_HOLD);
     midStage.set_brake_mode(MOTOR_BRAKE_HOLD);
     topStage.set_brake_mode(MOTOR_BRAKE_HOLD);
-    bottomStage.move(100);
-    midStage.move(100);
-    topStage.move(-100);
+    bottomStage.move(127);
+    midStage.move(127);
+    topStage.move(-80);
 }
 
 void stopIntake()
@@ -41,6 +41,32 @@ void stopIntake()
     bottomStage.brake();
     midStage.brake();
     topStage.brake();
+}
+void outake(int time)
+{
+    bottomStage.move(-127);//intake out then in
+    midStage.move(-127);
+    topStage .move(127);
+
+    pros::delay(time);
+
+}
+void outakeSkills(int time)
+{
+    bottomStage.move(-50);//intake out then in
+    midStage.move(-50);
+    topStage .move(-10);
+
+    pros::delay(time);
+
+}
+void scoreMidSkills(){
+    bottomStage.set_brake_mode(MOTOR_BRAKE_HOLD);
+    midStage.set_brake_mode(MOTOR_BRAKE_HOLD);
+    topStage.set_brake_mode(MOTOR_BRAKE_HOLD);
+    bottomStage.move(100);
+    midStage.move(100);
+    topStage.move(-30);
 }
 // Improved slew rate limiting for smoother control
 double slewStep = 30.0;  // Increased for better responsiveness
@@ -100,12 +126,17 @@ double slew(double val, double fwdVal)
     return prevVal;
 }
 
+// Drive PID gains (made global for monitoring)
+double drive_kP = 0.13; 
+double drive_kI = 0.00; 
+double drive_kD = 0.41;
+
 void drivePID(double fwdVal, double maxSpeedPercent, double timeout)
 {
     
-    double kP = 0.15; 
-    double kI = 0.00; 
-    double kD = 0.39; 
+    double kP = drive_kP; 
+    double kI = drive_kI; 
+    double kD = drive_kD; 
 
     const double diameter = 3.25;
     const double pi = 3.14159;
