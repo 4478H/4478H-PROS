@@ -46,7 +46,7 @@ void outake(int time)
 {
     bottomStage.move(-127);//intake out then in
     midStage.move(-127);
-    topStage .move(127);
+    topStage .move(-50);
 
     pros::delay(time);
 
@@ -257,5 +257,40 @@ void drivePID(double fwdVal, double maxSpeedPercent, double timeout)
     // Stop motors once goal is reached
     left_motors.brake();
     right_motors.brake();
+}
+void turnToHeadingSmart(float theta, int timeout, TurnToHeadingParams params, bool async)
+{
+    // Get current heading
+    float currentHeading = chassis.getPose().theta;
+    
+    // Calculate angle difference
+    float angleDiff = theta - currentHeading;
+    
+    // Normalize to [-180, 180]
+    while (angleDiff > 180) angleDiff -= 360;
+    while (angleDiff < -180) angleDiff += 360;
+    
+    // For small turns, automatically apply minSpeed if not already set
+    // This ensures the robot has enough power to overcome friction and motor deadband
+    if (params.minSpeed == 0)
+    {
+        float absAngleDiff = fabs(angleDiff);
+        
+        // Very small turns (< 15 degrees) need higher minSpeed to overcome friction
+        if (absAngleDiff < 15.0)
+        {
+            params.minSpeed = 40; // Higher minimum speed for very small turns
+            params.earlyExitRange = 2; // Tighter exit range for precision
+        }
+        // Small to medium turns (15-30 degrees) need moderate minSpeed
+        else if (absAngleDiff < 30.0)
+        {
+            params.minSpeed = 30; // Moderate minimum speed
+            params.earlyExitRange = 3;
+        }
+    }
+    
+    // Call the actual turnToHeading function with async parameter
+    chassis.turnToHeading(theta, timeout, params, async);
 }
 

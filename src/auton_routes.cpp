@@ -1,7 +1,9 @@
+#include "lemlib/chassis/chassis.hpp"
 #include "main.h"
 #include "auton_routes.h"
 #include "devices.h"
 #include "movement.h"
+#include "opticalAlign.h"
 
 
 
@@ -87,36 +89,52 @@ void odomAWP(int i){
 void odomAWPHigh(int i){
 drivePID(4, 20,3000);
 }
-void tylerAuton(int i){
-}
 void skills(int i){
 chassis.setPose(0,0,180);
-loader.set_value(HIGH);
+wing.set_value(HIGH);
 Intake(1);
-drivePID(30.495, 100, 3000);
-chassis.turnToHeading(270, 1000);
-drivePID(13, 100, 2000);
-drivePID(-2, 50, 500);
-drivePID(2,50, 500);
+drivePID(31.8, 50, 3000);
+chassis.turnToHeading(270, 1500);
+loader.set_value(HIGH);
 pros::delay(200);
-drivePID(-20.423, 100, 3000);
+drivePID(11, 50, 2500);
+drivePID(-2, 50, 500);
+drivePID(3.1,50, 500);
+pros::delay(500);
+drivePID(-19.423, 100, 3000);
 loader.set_value(LOW);
-chassis.moveToPose(51.2, -17.3, 90, 5000);
-drivePID(63.64, 100, 5000);
-chassis.turnToHeading(180, 1000);
-drivePID(-12.374, 100, 1500);
-chassis.turnToHeading(90, 1000);
-drivePID(-11.932, 100, 1500);
+chassis.turnToHeading(180, 1500);
+drivePID(14.5, 50, 5000);
+chassis.turnToHeading(90, 1500);
+chassis.turnToHeading(108, 1500);
+drivePID(25, 50, 2000);
+chassis.turnToHeading(93, 1500);
+drivePID(68, 50, 6000);
+chassis.turnToHeading(180, 1500);
+drivePID(-11.5, 50, 3500);
+chassis.turnToHeading(90, 1500);
+drivePID(-13.5, 50, 3000);
+outake(200);
+Intake(1);
 hood.set_value(HIGH);
-pros::delay(700);
+pros::delay(1200);
 hood.set_value(LOW);
 loader.set_value(HIGH);
 pros::delay(200);
-drivePID(31.16, 100, 3000);
-drivePID(-31.379, 100, 3000);
-chassis.moveToPose(92.587, -3.315, 0, 5000);
-chassis.turnToHeading(0, 1000);
-drivePID(67.617, 100, 4000);
+chassis.turnToHeading(90, 1500);
+drivePID(30, 50, 3000);
+drivePID(-2, 50, 500);
+drivePID(3.3,50, 500);
+pros::delay(500);
+chassis.moveToPose(23.5, -0.6, 90, 5000);
+outake(200);
+Intake(1);
+hood.set_value(HIGH);
+pros::delay(1200);
+hood.set_value(LOW);
+loader.set_value(HIGH);
+chassis.moveToPose(35.5, 27.4, 0, 5000);
+drivePID(67.617, 50, 4000);
 chassis.turnToHeading(90, 1000);
 loader.set_value(HIGH);
 pros::delay(200);
@@ -287,19 +305,17 @@ chassis.moveToPose(31.5, 13.4, 90, 5000);
 }
 void rightPush(int i){
 chassis.setPose(0,0,180);
-loader.set_value(HIGH);
 Intake(1);
-drivePID(33, 100, 3000);
+drivePID(32.2, 70, 3000);
 chassis.turnToHeading(270, 1000);
-drivePID(14.607, 100, 2000);
-drivePID(-2, 50, 500);
-drivePID(2,50, 500);
+loader.set_value(HIGH);
 pros::delay(200);
-chassis.turnToHeading(275, 1000);
-drivePID(-27.5, 100, 3000);
+drivePID(14.2, 70, 2000);
+drivePID(-14, 70, 3000);
+alignToLongGoal();
 loader.set_value(LOW);
 hood.set_value(HIGH);
-pros::delay(700);
+pros::delay(1500);
 hood.set_value(LOW);
 chassis.turnToHeading(18.281, 1000);
 drivePID(26.064, 70, 3000);
@@ -316,13 +332,37 @@ drivePID(20.329, 100, 1000);
 }
 void PIDTesting(int i){
 
-chassis.setPose(0,0,0);
-chassis.turnToHeading(180,1000);
+chassis.setPose(0,0,270);
 /*
+chassis.turnToHeading(180,1000);
+
 pros::delay(1000);
 chassis.turnToHeading(180, 1000);
 pros::delay(1000);
 chassis.turnToHeading(0, 1000);
-*/
+
 //drivePID(24, 100, 3000);
+drivePID(70, 100, 10000);
+*/
+alignToLongGoal();
+}
+
+void stopAuton(){
+	// Stop all motors
+	all_motors.brake();
+	intake.brake();
+	bottomStage.brake();
+	midStage.brake();
+	topStage.brake();
+	
+	// Retract all pneumatics
+	hood.set_value(LOW);
+	loader.set_value(LOW);
+	wing.set_value(LOW);
+	midDescore.set_value(LOW);
+	
+	// Halt autonomous
+	while(true){
+		pros::delay(10);
+	}
 }

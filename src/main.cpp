@@ -52,20 +52,9 @@ void initialize() {
         while (true) {
 
             // Display lemlib pose
-            pros::lcd::print(0, "LemLib X:%.1f Y:%.1f", chassis.getPose().x, chassis.getPose().y);
-            pros::lcd::print(1, "Heading: %.1f", fmod(chassis.getPose().theta, 360.0));
+            pros::lcd::print(3, "LemLib X:%.1f Y:%.1f", chassis.getPose().x, chassis.getPose().y);
+            pros::lcd::print(4, "Heading: %.1f", fmod(chassis.getPose().theta, 360.0));
             
-            // Display lateral PID settings
-            pros::lcd::print(2, "Lateral: KP=%.1f KI=%.1f KD=%.1f", 
-                           lateral_controller.kP, lateral_controller.kI, lateral_controller.kD);
-            
-            // Display angular PID settings
-            pros::lcd::print(3, "Angular: KP=%.1f KI=%.1f KD=%.1f", 
-                           angular_controller.kP, angular_controller.kI, angular_controller.kD);
-            
-            // Display drive PID settings
-            pros::lcd::print(4, "Drive: KP=%.2f KI=%.2f KD=%.2f", 
-                           drive_kP, drive_kI, drive_kD);
             pros::delay(100);
         } });
 }

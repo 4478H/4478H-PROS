@@ -22,6 +22,7 @@ extern double drive_kD;
 // fwdVal: target distance (or degrees for turn)
 // maxSpeedPercent: optional speed cap in percent (0-100). Default 100 = full power (127)
 extern void drivePID(double, double maxSpeedPercent = 100.0, double timeout = 3000);
+extern void turnToHeadingSmart(float theta, int timeout, lemlib::TurnToHeadingParams params = {}, bool async = true);
 
 
 #endif

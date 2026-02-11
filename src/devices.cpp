@@ -34,7 +34,7 @@ pros::Motor mMidRight(18, pros::MotorGearset::blue);
 // Sensor Declerations and Configurations
 pros::Imu imu(3  );
 pros::Optical colorSens(8);
-pros::Distance backDistance(16); 
+pros::Distance backDistance(15); 
 Distance* backDistancePtr = &backDistance;
 // Phnematic Declerations and Configurations
 adi::Port hood('B', E_ADI_DIGITAL_OUT);
