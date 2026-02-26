@@ -10,6 +10,7 @@ using namespace pros;
 
 extern void Intake(double=1);//-1 for outake, 1 for intake
 extern void scoreMid();
+extern void load();
 extern void stopIntake();
 extern void outake(int time);
 extern void outakeSkills(int time);

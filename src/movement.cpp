@@ -32,7 +32,12 @@ void scoreMid(){
     midStage.move(127);
     topStage.move(-80);
 }
-
+void load(){
+    bottomStage.set_brake_mode(MOTOR_BRAKE_HOLD);
+    midStage.set_brake_mode(MOTOR_BRAKE_HOLD);
+    topStage.set_brake_mode(MOTOR_BRAKE_HOLD);
+    bottomStage.move(127);
+}
 void stopIntake()
 {
     bottomStage.set_brake_mode(MOTOR_BRAKE_HOLD);
@@ -46,7 +51,7 @@ void outake(int time)
 {
     bottomStage.move(-127);//intake out then in
     midStage.move(-127);
-    topStage .move(-50);
+    topStage .move(-80);
 
     pros::delay(time);
 

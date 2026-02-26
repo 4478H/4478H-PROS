@@ -271,30 +271,33 @@ chassis.moveToPose(0.375, -10.165, 0, 5000);
 drivePID(20.992, 50, 3000);
 }
 void leftPush(int i){
+wing.set_value(HIGH);
 chassis.setPose(0,0,0);
 Intake(1);
-drivePID(33, 100, 3000);
+drivePID(31, 100, 3000);
 chassis.turnToHeading(270, 1000);
+loader.set_value(HIGH);
+drivePID(11.8, 100, 2500);
 /*
-drivePID(12.8, 100, 2500);
-drivePID(-4, 100, 500);
-drivePID(4.2,100, 500);
-pros::delay(150);
-chassis.turnToHeading(260, 500);
+drivePID(-2, 100, 500);
+drivePID(3,100, 500);
 */
-drivePID(-18, 100, 1800);
+alignToLongGoal();
+/*
+drivePID(-30, 100, 1800);
+*/
 loader.set_value(LOW);
 outake(200);
 hood.set_value(HIGH);
 Intake(1);
-pros::delay(700);
+pros::delay(900);
 hood.set_value(LOW);
 chassis.turnToHeading(154.719, 1500);
 drivePID(29.5,40, 3000);
 chassis.turnToHeading(180, 1000);
-drivePID(-14, 50, 3000);
+drivePID(-12.5, 80, 3000);
 chassis.turnToHeading(-38, 1000);
-drivePID(-27, 70, 2000);
+drivePID(-31, 70, 2000);
 stopIntake();
 scoreMid();
 pros::delay(300);
@@ -310,25 +313,27 @@ drivePID(32.2, 70, 3000);
 chassis.turnToHeading(270, 1000);
 loader.set_value(HIGH);
 pros::delay(200);
-drivePID(14.2, 70, 2000);
+drivePID(12.4, 100, 2000);
+/*
 drivePID(-14, 70, 3000);
+*/
 alignToLongGoal();
+outake(200);
+Intake(1);
 loader.set_value(LOW);
 hood.set_value(HIGH);
-pros::delay(1500);
+pros::delay(1700);
 hood.set_value(LOW);
-chassis.turnToHeading(18.281, 1000);
+chassis.turnToHeading(10.281, 2000);
+load();
 drivePID(26.064, 70, 3000);
-drivePID(-6, 50, 500);
+drivePID(-7, 80, 500);
 chassis.turnToHeading(42.614, 1000);
-drivePID(15.013, 100, 3000);
 Intake(-1);
+drivePID(17.013, 100, 3000);
 pros::delay(100);
-drivePID(14.552, 100);
-chassis.turnToHeading(205.615, 100);
-chassis.moveToPose(17.236, -22.097, 90, 5000);
-chassis.turnToHeading(90, 100);
-drivePID(20.329, 100, 1000);
+drivePID(4.552, 100, 3000);
+
 }
 void PIDTesting(int i){
 
