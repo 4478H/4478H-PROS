@@ -42,7 +42,5 @@ extern AutonSelector testingSelector;
 
 // Function declarations
 extern bool red;
-void on_left_button();
-void on_right_button();
 
 #endif // AUTON_SELECTOR_H

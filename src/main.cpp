@@ -41,30 +41,35 @@ void initialize() {
 	// Show current route on brain screen
 	competitionSelector.displaySelectionBrain();
 	
-	// Register button callbacks for auton selector
-	lcd::register_btn0_cb(on_left_button);
-	lcd::register_btn2_cb(on_right_button);
+	// Register button callback for alliance toggle
 	lcd::register_btn1_cb(onCenter_button);
 	
-	    // Start a background task to update the LCD with robot pose and selection
+    // Start a background task to update the LCD with robot pose and selection
     pros::Task screen_task([&]()
                            {
         while (true) {
-
+            
             // Display lemlib pose
             pros::lcd::print(3, "LemLib X:%.1f Y:%.1f", chassis.getPose().x, chassis.getPose().y);
-            pros::lcd::print(4, "Heading: %.1f", fmod(chassis.getPose().theta, 360.0));
-            
+            pros::lcd::print(4, "Dectection Size: %d", backDistance.get_object_size());
+            pros::lcd::print(5, "Heading: %.1f", chassis.getPose().theta);
             pros::delay(100);
         } });
+    
+    // Start a task for auton selection using limit switch
+    pros::Task auton_select_task([&]() {
+        bool lastPressed = false;
+        while (true) {
+            bool pressed = autonLimitSwitch.get_value();
+            if (pressed && !lastPressed) {
+                competitionSelector.nextSelection();
+                competitionSelector.displaySelectionBrain();
+            }
+            lastPressed = pressed;
+            pros::delay(100);
+        }
+    });
 }
-
-
-
-
-
-
-
 void autonomous() {
     controller.clear();
     all_motors.set_brake_mode_all(E_MOTOR_BRAKE_HOLD);
@@ -73,7 +78,8 @@ void autonomous() {
     pros::Task display_task([&]() {
         while(true) {
             controller.print(0, 0, "Heading: %.1f", fmod(chassis.getPose().theta, 360.0));
-            controller.print(5, 0, "LemLib X:%.1f Y:%.1f", chassis.getPose().x, chassis.getPose().y);
+            controller.print(2, 0, "LemLib X:%.1f", chassis.getPose().x);
+            controller.print(4, 0, "LemLib Y:%.1f", chassis.getPose().y);
             pros::delay(100);
         }
     });
@@ -82,6 +88,7 @@ void autonomous() {
     all_motors.brake();
     delay(2000);
     all_motors.set_brake_mode_all(E_MOTOR_BRAKE_COAST);
+    intake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 }
 /**
  * Runs while the robot is in the disabled state of Field Management System or
@@ -104,18 +111,11 @@ void competition_initialize() {
     // show current route on brain screen
     competitionSelector.displaySelectionBrain();
 
-    // run buttons once to print values on screen
-    on_left_button();
-    on_right_button();
-
     // assign buttons to actions in auton selector
-    lcd::register_btn0_cb(on_left_button);
-    lcd::register_btn2_cb(on_right_button);
-
     lcd::register_btn1_cb(onCenter_button);
 }
 
-const double SMOOTHING_DENOMINATOR = 150; // Used to normalize the exponential curve
+const double SMOOTHING_DENOMINATOR = 220; // Used to normalize the exponential curve
 const double EXPONENTIAL_POWER = 2.2;       // Controls how aggressive the curve is
 // Helper function that makes joystick input more precise for small movements
 // while maintaining full power at maximum joystick
@@ -162,28 +162,24 @@ void handleIntake()
 	
 	if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
 		bottomStage.move(127);
-		midStage.move(127);
 		topStage.move(127);
 	}
 
 
 	else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
 		bottomStage.move(-127);
-		midStage.move(-127);
 		topStage.move(127);
 	}
 
 
 	else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)){
 		bottomStage.move(127);
-		midStage.move(127);
-		topStage.move(-35);
+		topStage.move(60);
 	}
 
 
 	else{
 		bottomStage.brake();
-		midStage.brake();
 		topStage.brake();
 	}
 

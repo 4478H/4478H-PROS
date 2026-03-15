@@ -1,5 +1,6 @@
 #include "main.h"
 #include "api.h"
+#include "pros/adi.h"
 #include "pros/motors.hpp"
 #include "lemlib/api.hpp" // IWYU pragma: keep
 #include "lemlib/chassis/chassis.hpp"
@@ -17,41 +18,27 @@
 
 void Intake(double direction)
 {
-    bottomStage.set_brake_mode(MOTOR_BRAKE_HOLD);
-    midStage.set_brake_mode(MOTOR_BRAKE_HOLD);
-    topStage.set_brake_mode(MOTOR_BRAKE_HOLD);
     bottomStage.move(direction * 127);
-    midStage.move(direction * 127);
     topStage.move(direction * 127);
 }
 void scoreMid(){
-    bottomStage.set_brake_mode(MOTOR_BRAKE_HOLD);
-    midStage.set_brake_mode(MOTOR_BRAKE_HOLD);
-    topStage.set_brake_mode(MOTOR_BRAKE_HOLD);
     bottomStage.move(127);
-    midStage.move(127);
     topStage.move(-80);
 }
 void load(){
-    bottomStage.set_brake_mode(MOTOR_BRAKE_HOLD);
-    midStage.set_brake_mode(MOTOR_BRAKE_HOLD);
-    topStage.set_brake_mode(MOTOR_BRAKE_HOLD);
-    bottomStage.move(127);
+    bottomStage.move(80);
 }
 void stopIntake()
 {
     bottomStage.set_brake_mode(MOTOR_BRAKE_HOLD);
-    midStage.set_brake_mode(MOTOR_BRAKE_HOLD);
     topStage.set_brake_mode(MOTOR_BRAKE_HOLD);
     bottomStage.brake();
-    midStage.brake();
     topStage.brake();
 }
 void outake(int time)
 {
     bottomStage.move(-127);//intake out then in
-    midStage.move(-127);
-    topStage .move(-80);
+    topStage.move(-80);
 
     pros::delay(time);
 
@@ -59,7 +46,6 @@ void outake(int time)
 void outakeSkills(int time)
 {
     bottomStage.move(-50);//intake out then in
-    midStage.move(-50);
     topStage .move(-10);
 
     pros::delay(time);
@@ -67,10 +53,8 @@ void outakeSkills(int time)
 }
 void scoreMidSkills(){
     bottomStage.set_brake_mode(MOTOR_BRAKE_HOLD);
-    midStage.set_brake_mode(MOTOR_BRAKE_HOLD);
     topStage.set_brake_mode(MOTOR_BRAKE_HOLD);
     bottomStage.move(100);
-    midStage.move(100);
     topStage.move(-30);
 }
 // Improved slew rate limiting for smoother control
@@ -299,3 +283,33 @@ void turnToHeadingSmart(float theta, int timeout, TurnToHeadingParams params, bo
     chassis.turnToHeading(theta, timeout, params, async);
 }
 
+void descore(){
+    chassis.setPose(-47.129,-47.129,chassis.getPose().theta);
+    delay(100);
+    wing.set_value(LOW);
+    chassis.moveToPose(-28.272,-36.449,90,1000,{.forwards=true, .lead=.1},false);
+    
+    chassis.turnToHeading(90,400,{},false);
+
+    drivePID(32,100,2000);
+    turnToHeadingSmart(85,500); 
+    left_motors.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    right_motors.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    left_motors.brake();
+    right_motors.brake();
+}
+void descoreLeft(){
+    chassis.setPose(-29.548,47.129,chassis.getPose().theta);
+    delay(100);
+    wing.set_value(LOW);
+    chassis.moveToPose(-23.227,58.023,90,1000,{.forwards=true, .lead=.1},false);
+    
+    chassis.turnToHeading(90,400,{},false);
+
+    drivePID(32,100,2000);
+    turnToHeadingSmart(85,500); 
+    left_motors.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    right_motors.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    left_motors.brake();
+    right_motors.brake();
+}

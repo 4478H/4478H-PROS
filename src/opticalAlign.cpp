@@ -7,20 +7,20 @@
 using namespace pros;
 
 // All distances in mm, angles in degrees
-const double minGoalDist = 400.0;     // Min valid goal distance
-const double maxGoalDist = 1000.0;    // Max valid goal distance
-const double turnSpd = 30.0;          // Normal turn speed
-const double backupSpd = 100.0;        // Speed for backing into goal
+const double minGoalDist = 50.0;     // Min valid goal distance
+const double maxGoalDist = 400.0;    // Max valid goal distance
+const double turnSpd = 10.0;          // Normal turn speed
+const double backupSpd = 50.0;        // Speed for backing into goal
 const double alignTolerance = 4.0;    // Max heading error allowed
-const double maxscanAngle = 40.0;     // How far to scan each way
-const double scanStartAngle = 270.0;  // Left scan limit
+const double maxscanAngle = 30.0;     // How far to scan each way
+const double scanStartAngle = 290.0;  // Left scan limit
 const double scanEndAngle = 360.0;    // Right scan limit
 const double extraTurnAngle = 0.5;    // Small extra turn for centering
 
 bool detectsGoal() {
     int objSize = backDistance.get_object_size();
     const int minMediumSize = 45;     // Filter out small objects/noise
-    const int maxMediumSize = 80;    // Filter out large objects/walls
+    const int maxMediumSize = 90;    // Filter out large objects/walls
     return (objSize >= minMediumSize && objSize <= maxMediumSize);
 }
 

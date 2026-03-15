@@ -14,6 +14,11 @@ void skillsNew(int i);
 void leftPush(int i);
 void rightPush(int i);
 void PIDTesting(int i);
+void right7Push(int i);
+void left7Push(int i);
+void soloTap(int i);
 void stopAuton();
+void right4_3Long(int i);
+void left4_3Long(int i);
 
 #endif // AUTON_ROUTES_H

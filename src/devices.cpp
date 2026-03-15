@@ -18,36 +18,36 @@ using namespace lemlib;
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 // Motor Declerations and Port Configurations
-pros::MotorGroup right_motors({19, 18, -14}, pros::MotorGearset::blue);
-pros::MotorGroup left_motors({-11, -12, 13}, pros::MotorGearset::blue);
-pros::MotorGroup all_motors({19, 18, -14, -11, -12, 13}, pros::MotorGearset::blue);
+pros::MotorGroup right_motors({15, -9, 11}, pros::MotorGearset::blue);
+pros::MotorGroup left_motors({-12, 10, -20}, pros::MotorGearset::blue);
+pros::MotorGroup all_motors({19, -20, -12, 11, -9, 15}, pros::MotorGearset::blue);
 pros::Motor bottomStage{16, pros::MotorGearset::blue};
-pros::Motor midStage{-1, pros::MotorGearset::green};
 pros::Motor topStage{2, pros::MotorGearset::green};
-pros::MotorGroup intake({10, -1, 2});
-pros::Motor mFrontLeft(13, pros::MotorGearset::blue);
-pros::Motor mBackLeft(-11, pros::MotorGearset::blue);
-pros::Motor mMidLeft(-12, pros::MotorGearset::blue);
-pros::Motor mFrontRight(-14, pros::MotorGearset::blue);
-pros::Motor mBackRight(19, pros::MotorGearset::blue);
-pros::Motor mMidRight(18, pros::MotorGearset::blue);
+pros::MotorGroup intake({16, 2});
+pros::Motor mFrontLeft(-20, pros::MotorGearset::blue);
+pros::Motor mBackLeft(-12, pros::MotorGearset::blue);
+pros::Motor mMidLeft(10, pros::MotorGearset::blue);
+pros::Motor mFrontRight(11, pros::MotorGearset::blue);
+pros::Motor mBackRight(15, pros::MotorGearset::blue);
+pros::Motor mMidRight(-9, pros::MotorGearset::blue);
 // Sensor Declerations and Configurations
-pros::Imu imu(3  );
+pros::Imu imu(1);
 pros::Optical colorSens(8);
-pros::Distance backDistance(15); 
+pros::Distance backDistance(17); 
 Distance* backDistancePtr = &backDistance;
 // Phnematic Declerations and Configurations
 adi::Port hood('B', E_ADI_DIGITAL_OUT);
 adi::Port loader('C', E_ADI_DIGITAL_OUT);
-adi::Port wing('A', E_ADI_DIGITAL_OUT);
-adi::Port midDescore('G', E_ADI_DIGITAL_OUT);
+adi::Port wing('H', E_ADI_DIGITAL_OUT);
+adi::Port midDescore('A', E_ADI_DIGITAL_OUT);
+adi::DigitalIn autonLimitSwitch('G');
 
 
 
 // drivetrain settings
 Drivetrain drivetrain(&left_motors,  // left motor group
   &right_motors, // right motor group
-  11.5,          // 11 inch track width
+  11.25,          // 11 inch track width
   3.25,          // using new 2.75" omnis
   450,           // drivetrain rpm is 450
   1.5            // horizontal drift is 8 (center traction wheel drivebase)

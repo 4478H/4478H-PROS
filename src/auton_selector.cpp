@@ -15,7 +15,7 @@ bool red = false;
 
 // Constructor
 AutonSelector::AutonSelector(const AutonRoutine* routinesArray, size_t routineCount, bool combineTesting, const AutonRoutine* extraRoutinesArray, size_t extraCount) {
-    currentSelection = 2;  // Initialize to first selection
+    currentSelection =1;  // Initialize to first selection
 
     // Add main routines
     for (size_t i = 0; i < routineCount; i++) {
@@ -46,10 +46,10 @@ void AutonSelector::displaySelectionBrain() {
         pros::lcd::print(7, "Invalid selection: %i", currentSelection);
         return;
     }
+    pros::lcd::clear_line(7);
+    pros::lcd::print(7, "Alliance: %s", red ? "Red" : "Blue");
     pros::lcd::clear_line(6);
-    pros::lcd::print(6, "Alliance: %s", red ? "Red" : "Blue");
-    pros::lcd::clear_line(5);
-    pros::lcd::print(5, "%s",routines[currentSelection - 1].displayName.c_str());
+    pros::lcd::print(6, "%s",routines[currentSelection - 1].displayName.c_str());
 }
 
 void AutonSelector::prevSelection() {
@@ -80,26 +80,17 @@ int AutonSelector::getRoutineCount() const {
 
 // Global object definitions
 const AutonRoutine COMPETITION_ROUTINES[] = {                        
-    {"Left 7 Ball Push", leftPush, 1},
-    {"Right 7 Ball Push", rightPush, 1},
-    {"Full AWP LEFT SIDE", fullAWPLeft,1},
-    {"Full AWP RIGHT SIDE", fullAWPRight,1},
+    {"Left 7 Ball Push", left7Push, 1},
+    {"Right 7 Ball Push", right7Push, 1},
+    {"Full AWP RIGHT SIDE", soloTap,1},
     {"Odom AWP Right", odomAWPHigh,1},
     {"skills", skills,1},
     {"PID Testing", PIDTesting,1},
+    {"skillsNew", skillsNew,1}
+
 };
 
 
 const bool isTestingCombined = false;
 
 AutonSelector competitionSelector(COMPETITION_ROUTINES, sizeof(COMPETITION_ROUTINES) / sizeof(COMPETITION_ROUTINES[0]));
-
-void on_left_button() {
-    competitionSelector.prevSelection();
-    competitionSelector.displaySelectionBrain();
-}
-
-void on_right_button() {
-    competitionSelector.nextSelection();
-    competitionSelector.displaySelectionBrain();
-}

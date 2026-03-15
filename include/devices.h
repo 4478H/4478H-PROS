@@ -23,7 +23,6 @@ extern MotorGroup left_motors;
 extern MotorGroup right_motors;
 extern MotorGroup all_motors;
 extern Motor bottomStage;
-extern Motor midStage;
 extern Motor topStage;
 extern MotorGroup intake;
 extern Motor mFrontLeft;
@@ -42,6 +41,7 @@ extern adi::Port hood;
 extern adi::Port loader;
 extern adi::Port wing;
 extern adi::Port midDescore;
+extern adi::DigitalIn autonLimitSwitch;
 
 extern lemlib::TrackingWheel left_tracking_wheel;
 extern lemlib::TrackingWheel right_tracking_wheel;
