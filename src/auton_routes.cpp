@@ -378,19 +378,25 @@ void right7Push(int i){
 chassis.setPose(-45.458, -14.867, 90);
 Intake(1);
 wing.set_value(HIGH);
-chassis.moveToPose(-20.268, -22.159, 180,1100, {.lead=0.4,.minSpeed = 127}, true);
+chassis.moveToPose(-21.388, -21.69, 110,1100, {.lead=0.4,.minSpeed = 127}, true);
 pros::delay(500);
 loader.set_value(HIGH);
 pros::delay(200);
 chassis.moveToPose(-47.889, -47.35, 270, 1000, {.lead=0.2,.minSpeed = 100}, false);
+Intake(-1);
+pros::delay(700);
+Intake(1);
 chassis.turnToHeading(270, 1000);
 drivePID(30, 100, 3000);
 pros::delay(200);
-drivePID(-30, 100, 2000);
+//drivePID(-30, 100, 2000);
+chassis.moveToPose(13, 0, 270, 3000, {.forwards = false, .lead = 0.4, .minSpeed = 127}, false);
 hood.set_value(HIGH);
-pros::delay(400);
-hood.set_value(LOW);	
-descore();
+pros::delay(2000);
+drivePID(10, 100, 2000);
+hood.set_value(LOW);
+drivePID(-10, 100, 2000);	
+//descore();
 }
 void left7Push(int i){
 chassis.setPose(-45.458, 14.743, 90);
@@ -402,7 +408,7 @@ loader.set_value(HIGH);
 pros::delay(200);
 chassis.moveToPose(-47.149,51, 272, 1000, {.lead=0.2,.minSpeed = 100}, false);
 chassis.turnToHeading(270,500);
-drivePID(-8, 100, 1000);
+drivePID(-6.5, 100, 1000);
 hood.set_value(HIGH);
 outake(200);
 Intake(1);
@@ -412,18 +418,18 @@ hood.set_value(LOW);
 drivePID(32, 50, 2500);
 pros::delay(200); 
 turnToHeadingSmart(269,500);
-*/
-chassis.moveToPose(-35.5, 19, 270, 3000, {.forwards = true, .lead = 0.4, .minSpeed = 127}, false);
+
+chassis.moveToPose(-30, 16.3, 270, 3000, {.forwards = true, .lead = 0.4, .minSpeed = 127}, false);
 pros::delay(700);
 //drivePID(-29, 100, 1500);
-//chassis.moveToPose(-9.4,17.4,270,3000,{.forwards = false,.lead=0.4,.minSpeed = 127}, false);
+//chassis.moveToPose(-10.6,16.3,270,3000,{.forwards = false,.lead=0.4,.minSpeed = 127}, false);
 outake(500);
 hood.set_value(HIGH);
 Intake(1);
 pros::delay(400);
 hood.set_value(LOW);
 //descoreLeft();
-
+*/
 }
 void soloTap(int i){
 chassis.setPose(-46, 0, 0);

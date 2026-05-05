@@ -15,7 +15,7 @@ bool red = false;
 
 // Constructor
 AutonSelector::AutonSelector(const AutonRoutine* routinesArray, size_t routineCount, bool combineTesting, const AutonRoutine* extraRoutinesArray, size_t extraCount) {
-    currentSelection =1;  // Initialize to first selection
+    currentSelection =2;  // Initialize to first selection
 
     // Add main routines
     for (size_t i = 0; i < routineCount; i++) {

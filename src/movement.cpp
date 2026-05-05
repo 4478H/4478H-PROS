@@ -287,11 +287,11 @@ void descore(){
     chassis.setPose(-47.129,-47.129,chassis.getPose().theta);
     delay(100);
     wing.set_value(LOW);
-    chassis.moveToPose(-28.272,-36.449,90,1000,{.forwards=true, .lead=.1},false);
+    chassis.moveToPose(-32.272,-36.449,90,1000,{.forwards=true, .lead=.1},false);
     
     chassis.turnToHeading(90,400,{},false);
 
-    drivePID(32,100,2000);
+    drivePID(25,100,2000);
     turnToHeadingSmart(85,500); 
     left_motors.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     right_motors.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
