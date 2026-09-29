@@ -1,8 +1,13 @@
-# if "template" is in the make command, do not include static.lib files
+# The default LemLib template includes a placeholder asset file that should not be
+# packaged, otherwise it generates duplicate exported symbols when the hot/cold
+# project is linked.
+DEFAULT_ASSET_PLACEHOLDER=static/example.txt
+ASSET_FILES=$(filter-out $(DEFAULT_ASSET_PLACEHOLDER),$(wildcard static/*))
+
 ifneq (,$(findstring template,$(MAKECMDGOALS)))
-ASSET_FILES=$(wildcard static/*)
+ASSET_FILES=$(filter-out $(DEFAULT_ASSET_PLACEHOLDER),$(wildcard static/*))
 else
-ASSET_FILES=$(wildcard static/*) $(wildcard static.lib/*)
+ASSET_FILES=$(filter-out $(DEFAULT_ASSET_PLACEHOLDER),$(wildcard static/*) $(wildcard static.lib/*))
 endif
 
 TEMPLATE_FILES+=$(wildcard static/*) $(wildcard firmware/hot-cold-asset.mk)

@@ -37,6 +37,7 @@ void initialize() {
 	lcd::initialize();
 	chassis.calibrate();
 	pros::lcd::set_text_align(pros::lcd::Text_Align::CENTER);
+    Lift.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	
 	// Show current route on brain screen
 	competitionSelector.displaySelectionBrain();
@@ -184,7 +185,21 @@ void handleIntake()
 	}
 
 }
-
+void handleLift()
+{
+    if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
+        liftLeft.move_velocity(127);
+        liftRight.move_velocity(127);
+    }
+    else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
+        liftLeft.move_velocity(-127);
+        liftRight.move_velocity(-127);
+    }
+    else{
+        liftLeft.brake();
+        liftRight.brake();
+     } // r2 down
+}
 
 void handleHood(){
 	if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)){
@@ -237,12 +252,13 @@ void opcontrol() {
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
 	chassis.setPose(0, 0, 0);
 	while (true) {
-		handleDriveTrain();
+		/*handleDriveTrain();
 		handleHood();
 		handleMidDescore();
 		handleWing();
 		handleIntake();
-        handleLoader();
+        handleLoader();*/
+        handleLift();
 		pros::delay(20);                               // Run for 20 ms then update
-	}
+    }
 }

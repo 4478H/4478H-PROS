@@ -129,7 +129,7 @@ void drivePID(double fwdVal, double maxSpeedPercent, double timeout)
 
     const double diameter = 3.25;
     const double pi = 3.14159;
-    const double outputGear = 48;
+    const double outputGear = 60;
     const double inputGear = 36;
 
     double num = fwdVal;                                       // leave this one alone

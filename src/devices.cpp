@@ -21,6 +21,9 @@ pros::Controller controller(pros::E_CONTROLLER_MASTER);
 pros::MotorGroup right_motors({15, -9, 11}, pros::MotorGearset::blue);
 pros::MotorGroup left_motors({-12, 10, -20}, pros::MotorGearset::blue);
 pros::MotorGroup all_motors({19, -20, -12, 11, -9, 15}, pros::MotorGearset::blue);
+pros::Motor liftLeft{21, pros::MotorGearset::green};
+pros::Motor liftRight{-3, pros::MotorGearset::green};
+pros::MotorGroup Lift({21, -3}, pros::MotorGearset::green);
 pros::Motor bottomStage{16, pros::MotorGearset::blue};
 pros::Motor topStage{2, pros::MotorGearset::green};
 pros::MotorGroup intake({16, 2});
@@ -47,9 +50,9 @@ adi::DigitalIn autonLimitSwitch('G');
 // drivetrain settings
 Drivetrain drivetrain(&left_motors,  // left motor group
   &right_motors, // right motor group
-  11.25,          // 11 inch track width
+  11.375,          // 11 inch track width
   3.25,          // using new 2.75" omnis
-  450,           // drivetrain rpm is 450
+  360,           // drivetrain rpm is 360
   1.5            // horizontal drift is 8 (center traction wheel drivebase)
 );
 
