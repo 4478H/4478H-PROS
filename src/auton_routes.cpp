@@ -11,40 +11,7 @@
 
 
 void fullAWPLeft(int i){
-chassis.setPose(0,0,180);
-loader.set_value(HIGH);
-Intake(1);
-drivePID(30.053, 100, 3000);
-chassis.turnToHeading(270, 1000);
-drivePID(10.165, 100, 2000);
-drivePID(-2,100,500 );
-drivePID(2,100, 500);
-pros::delay(200);
-drivePID(-28.506, 100, 3000);
-loader.set_value(LOW);
-hood.set_value(HIGH);
-pros::delay(500);
-hood.set_value(LOW);
-chassis.turnToHeading(163.156, 1000);
-drivePID(25.166, 100, 3000);
-chassis.turnToHeading(180, 1000);
-drivePID(45.087, 100, 3500);
-chassis.turnToHeading(45, 1000);
-drivePID(13.907, 100, 2000);
-Intake(-1);
-pros::delay(200);
-Intake(1);
-drivePID(-13.907, 100, 2000);
-chassis.turnToHeading(225.898, 1000);
-chassis.moveToPose(0.221, -63.64, 270,3000);
-loader.set_value(HIGH);
-pros::delay(200);
-drivePID(11.491, 100, 1000);
-drivePID(-2, 40, 500);
-drivePID(2, 70, 500);
-pros::delay(200);
-drivePID(-27.18, 100);
-hood.set_value(HIGH);
+
 }
 void fullAWPRight(int i){
 chassis.setPose(0,0,180);

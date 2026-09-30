@@ -16,6 +16,7 @@
 #include "liblvgl/llemu.hpp"
 #include "pros/adi.h"
 #include "colorSort.h"
+#include "liftControl.h"
 using namespace pros;
 using namespace lemlib;
 /**
@@ -36,9 +37,9 @@ void initialize() {
 	wing.set_value(LOW);
 	lcd::initialize();
 	chassis.calibrate();
+    Lift.set_brake_mode_all(pros::E_MOTOR_BRAKE_COAST);
+    homeLift();
 	pros::lcd::set_text_align(pros::lcd::Text_Align::CENTER);
-    Lift.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-	
 	// Show current route on brain screen
 	competitionSelector.displaySelectionBrain();
 	
@@ -52,7 +53,11 @@ void initialize() {
             
             // Display lemlib pose
             pros::lcd::print(3, "LemLib X:%.1f Y:%.1f", chassis.getPose().x, chassis.getPose().y);
-            pros::lcd::print(4, "Dectection Size: %d", backDistance.get_object_size());
+            //pros::lcd::print(4, "Dectection Size: %d", backDistance.get_object_size());
+           /* double averageLiftPosition =
+            (liftLeft.get_position() + liftRight.get_position()) / 2.0;
+            pros::lcd::print(4, "Lift: %.1f deg", averageLiftPosition);
+            */
             pros::lcd::print(5, "Heading: %.1f", chassis.getPose().theta);
             pros::delay(100);
         } });
@@ -185,6 +190,7 @@ void handleIntake()
 	}
 
 }
+/*
 void handleLift()
 {
     if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
@@ -200,7 +206,7 @@ void handleLift()
         liftRight.brake();
      } // r2 down
 }
-
+*/
 void handleHood(){
 	if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)){
 		hood.set_value(!hood.get_value());
@@ -248,12 +254,11 @@ void handleLoader(){
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-
     chassis.setBrakeMode(pros::E_MOTOR_BRAKE_COAST);
 	chassis.setPose(0, 0, 0);
 	while (true) {
-		/*handleDriveTrain();
-		handleHood();
+		handleDriveTrain();
+		/*handleHood();
 		handleMidDescore();
 		handleWing();
 		handleIntake();
